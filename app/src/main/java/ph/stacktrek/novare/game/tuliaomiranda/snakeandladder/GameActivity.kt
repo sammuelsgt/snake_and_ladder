@@ -1,26 +1,17 @@
 package ph.stacktrek.novare.game.tuliaomiranda.snakeandladder
 
-import android.content.ContentValues.TAG
-import android.database.Cursor
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Dialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.GridLayout
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
-import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
-import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.adapters.PlayerAdapter
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.dao.PlayerDAO
 import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.dao.PlayerDAOSQLLiteImplementation
 import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.databinding.ActivityGameBinding
-import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.model.Player
-import java.text.FieldPosition
+import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.databinding.DialogPlayerWinnerBinding
 
 class GameActivity : AppCompatActivity() {
 
@@ -34,14 +25,11 @@ class GameActivity : AppCompatActivity() {
     private lateinit var playerThree: TextView
     private lateinit var playerFour: TextView
     private lateinit var gridLayout: GridLayout
-    private lateinit var playerOneMarker: ImageView
-    private lateinit var playerTwoMarker: ImageView
-    private lateinit var playerThreeMarker: ImageView
-    private lateinit var playerFourMarker: ImageView
     private lateinit var playerMarker: ArrayList<ImageView>
     private  var currentPlayer = 0
     private var test = 0
     private  var scores = arrayOf(0,0,0,0)
+    private var winner = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +43,6 @@ class GameActivity : AppCompatActivity() {
         rollButton = binding.rollDiceButton
 
         playerIndicator = binding.playerTurnIndicator
-//        binding.playerTurnIndicator.text = playerDAO.getPlayers()[0].nickname
         playerIndicator.text = "${test+1}"
 
         playerOne = binding.playerOne
@@ -69,6 +56,7 @@ class GameActivity : AppCompatActivity() {
 
         playerFour = binding.playerFour
         playerFour.text = playerDAO.getPlayers()[3].nickname
+
 
         gridLayout = binding.gridLayout
 
@@ -91,16 +79,16 @@ class GameActivity : AppCompatActivity() {
             else -> R.drawable.dice_six
         }
         diceImage.setImageResource(drawableResource)
+        val newPosition = scores[currentPlayer] + diceRoll
+        val excess = newPosition - 99
+        val finalPosition = if (excess > 0 ){
+            scores[currentPlayer] - excess
+        }
+        else{
+            newPosition
+        }
 
-
-
-        scores[currentPlayer] += diceRoll
-        currentPlayer = (currentPlayer + 1)% 4
-        Log.d("Scores", "Player 1:${scores[0]}, " +
-                "Player 2:${scores[1]}, Player 3:${scores[2]} " +
-                "Player 4:${scores[3]}  Dice: ${diceRoll}")
-
-        val checkPosition =  when(scores[currentPlayer]){
+        var checkPosition =  when(finalPosition){
             7 ->  28 //ladder
             21 ->  60 //ladder
             22 -> 16 //snake
@@ -112,22 +100,31 @@ class GameActivity : AppCompatActivity() {
             71 -> 92 //ladder
             89 ->  49 //snake
             98 ->  23 //snake
-            else -> scores[currentPlayer]
+            else -> finalPosition
+        }
+        if(checkPosition == 99){
+            moveMarker(playerMarker[currentPlayer], scores[currentPlayer])
+            winner = playerDAO.getPlayers()[currentPlayer].nickname
+            showWinnerDialogue().show()
+
+        }
+        else{
+
+            scores[currentPlayer] = checkPosition
+            playerMarker = arrayListOf(binding.blackPawn,binding.bluePawn,binding.redPawn,binding.yellowPawn)
+            moveMarker(playerMarker[currentPlayer], scores[currentPlayer])
+
+            playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} Black "
+            playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]+1} Blue"
+            playerThree.text = "${ playerDAO.getPlayers()[2].nickname}  ${scores[2]+1} Red"
+            playerFour.text = "${ playerDAO.getPlayers()[3].nickname}  ${scores[3]+1} Yellow"
+            currentPlayer = (currentPlayer + 1) % 4
+            playerIndicator.text = "It's ${ playerDAO.getPlayers()[currentPlayer].nickname}'s Turn ${scores[currentPlayer]+1}"
+
         }
 
-        scores[currentPlayer] = checkPosition
-        playerMarker = ArrayList()
-        playerMarker.add(binding.blackPawn)
-        playerMarker.add(binding.bluePawn)
-        playerMarker.add(binding.redPawn)
-        playerMarker.add(binding.yellowPawn)
-        moveMarker(playerMarker[currentPlayer], scores[currentPlayer])
 
-        playerIndicator.text = "It's ${ playerDAO.getPlayers()[currentPlayer].nickname}'s Turn ${scores[currentPlayer]+1}"
-        playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} Black "
-        playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]} Blue"
-        playerThree.text = "${ playerDAO.getPlayers()[2].nickname}  ${scores[2]} Red"
-        playerFour.text = "${ playerDAO.getPlayers()[3].nickname}  ${scores[3]} Yellow"
+
 
 
     }
@@ -145,8 +142,45 @@ class GameActivity : AppCompatActivity() {
             RelativeLayout.LayoutParams.WRAP_CONTENT,
             RelativeLayout.LayoutParams.WRAP_CONTENT
         ).apply {
-            leftMargin = x
-            topMargin = y
+            marker.animate().translationX(x.toFloat())
+                .translationY(y.toFloat()).duration = 500
+
+        }
+    }
+
+    private fun resetGame(){
+        currentPlayer = 0
+        scores = arrayOf(0,0,0,0)
+
+    }
+
+    private fun showWinnerDialogue(): Dialog {
+        return this.let{
+            val builder = AlertDialog.Builder(it)
+            val dialogPlayerActivity: DialogPlayerWinnerBinding =
+                DialogPlayerWinnerBinding.inflate(it.layoutInflater)
+
+            with(builder){
+                setPositiveButton("New Game", DialogInterface.OnClickListener { dialog, id ->
+                    val winner = winner
+                    Log.d("winner positive", winner)
+                    dialogPlayerActivity.winnerDialogText.text = "Congrats, ${winner} Won!"
+                    val playerDAO = PlayerDAOSQLLiteImplementation(applicationContext)
+                    playerDAO.addWinner(winner)
+                    resetGame()
+
+                })
+                setNegativeButton("Next", DialogInterface.OnClickListener { dialog, id ->
+                    val winner = winner
+
+                    val playerDAO = PlayerDAOSQLLiteImplementation(applicationContext)
+                    playerDAO.addWinner(winner)
+                    Log.d("winner negative", winner)
+                    resetGame()
+                })
+                setView(dialogPlayerActivity.root)
+                create()
+            }
         }
     }
 

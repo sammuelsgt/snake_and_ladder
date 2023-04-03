@@ -41,14 +41,15 @@ class PlayerActivity : AppCompatActivity() {
             playerDAO.addPlayer(player)
             playerAdapter.addPlayer(player)
 
-            binding.startButton.setOnClickListener {
-                val goToGame = Intent(
-                    applicationContext,
-                    GameActivity::class.java
-                )
-                startActivity(goToGame)
-                finish()
-            }
+
+        }
+        binding.startButton.setOnClickListener {
+            val goToGame = Intent(
+                applicationContext,
+                GameActivity::class.java
+            )
+            startActivity(goToGame)
+            finish()
         }
 
 

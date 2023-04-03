@@ -12,13 +12,22 @@
         android:theme="@style/Theme.SnakeAndLadder"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+            android:name=".GameActivity"
+            android:exported="true" />
         <activity
             android:name=".PlayerActivity"
             android:exported="true" />
         <activity
-            android:name=".GameActivity"
+            android:name=".HomeFragment"
+            android:exported="true" />
+        <activity
+            android:name=".HistoryFragment"
+            android:exported="true" />
+        <activity
+            android:name=".InstructionFragment"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

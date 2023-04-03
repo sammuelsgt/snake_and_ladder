@@ -1,16 +1,31 @@
 <resources>
-    <string name="app_name">Snake and Ladder</string>
-    <string name="username_string">Username</string>
-    <string name="password_string">Password</string>
-    <string name="register_string">Register</string>
-    <string name="confirm_password_string">Confirm Password</string>
-    <string name="game_button_roll">ROLL</string>
+    <string name="app_name">Snake and Ladders</string>
+    <string name="start_game_string">Start Game</string>
+    <string name="instruction_string">Instruction</string>
+    <string name="history_string">History</string>
 
-    <array name="colors">
-        <item>#FF0000</item> <!-- red -->
-        <item>#00FF00</item> <!-- green -->
-        <item>#0000FF</item> <!-- blue -->
-        <item>#FFFF00</item> <!-- yellow -->
-        <item>#FF00FF</item> <!-- magenta -->
-    </array>
+    <!--    How to Play-->
+    <string name="gameplay_string"><b>How to Play</b> \nThe players will move their pieces from left to right, starting at 1,following the numbers on the board, then the next row \n from right to left and repeat. If a player rolls a 4, then the player would move their piece four places.</string>
+
+    <!--    Snake>-->
+    <string name="snake_description"><b>Snake</b> \nWhen a player lands on a top of a snake, their playing piece will slide down to the bottom of the snake. Whereas landing on the bottom of a snake the player will remain in the same spot until their next turn.</string>
+
+    <!--    Ladders-->
+    <string name="ladders_description"><b>Ladders</b> \nWhen a player lands at the base of a ladder, it immediately climbs to the top of the ladder. Whereas landing at the top of a ladder the player will stay there until the next turn. The player does not move to the bottom of the ladder</string>
+
+    <!--    Winning the Game-->
+    <string name="winning_game_description"><b>Winning the Game</b> \nThe first player that reaches the highest space on the board, 100, wins the game. To win the player will need to roll the exact number to get you to the last space. If the player rolls a higher number than needed to land exactly on 100, their piece does not move and remains there until their next turn, when they can roll again.</string>
+
+    <!--    Bounce Back Variation-->
+    <string name="bounce_back_description"><b>The Bounce Back Variation</b> \nThe first player that reaches the highest space on the board, 100, wins the game. To win the player will need to roll the exact number to get to the last space. If the roll is too high, the player\'s piece will bounce off the last space and move back. For example, if a player had four spaces to get to 100 and rolled a 6, the piece will move four spaces to 100, then “bounce back" two spaces to 98.</string>
+
+    <string name="back_main_string">Back to Main</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ready_to_play">Ready to Play</string>
+    <string name="add_players">Add Players</string>
+    <string name="history_fragment">Winners</string>
+    <string name="name_of_winner">Sammuel Tuliao</string>
+    <string name="view_user_name">View User name</string>
+    <string name="players">PLAYERS</string>
 </resources>
