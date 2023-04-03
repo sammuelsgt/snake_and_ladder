@@ -4,12 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.PlayerActivity
 import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.dao.PlayerDAO
 import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.dao.PlayerDAOSQLLiteImplementation
 import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.databinding.PlayerCreateBinding
 import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.model.Player
 
-class PlayerAdapter (private val context: Context,
+class PlayerAdapter (private val context: PlayerActivity,
                      private var playerList: ArrayList<Player>):
     RecyclerView.Adapter<PlayerAdapter.ViewHolder>(){
 
@@ -18,6 +19,10 @@ class PlayerAdapter (private val context: Context,
     fun deletePlayer(position: Int){
         playerList.removeAt(position)
         notifyItemRemoved(position)
+
+        val count = playerList.size
+        context.binding.addPlayerButton.isEnabled = count < 4
+        context.binding.startButton.isEnabled = count in 2..4
     }
 
     fun addPlayer(players: Player){

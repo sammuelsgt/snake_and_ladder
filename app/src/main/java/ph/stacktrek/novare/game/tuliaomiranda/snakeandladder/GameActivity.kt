@@ -1,17 +1,12 @@
 package ph.stacktrek.novare.game.tuliaomiranda.snakeandladder
 
-import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.dao.PlayerDAO
 import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.dao.PlayerDAOSQLLiteImplementation
 import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.databinding.ActivityGameBinding
-import ph.stacktrek.novare.game.tuliaomiranda.snakeandladder.databinding.DialogPlayerWinnerBinding
 
 class GameActivity : AppCompatActivity() {
 
@@ -45,22 +40,44 @@ class GameActivity : AppCompatActivity() {
         playerIndicator = binding.playerTurnIndicator
         playerIndicator.text = "${test+1}"
 
-        playerOne = binding.playerOne
-        playerOne.text = playerDAO.getPlayers()[0].nickname
+        val numberOfPlayers = playerDAO.getPlayers().size
+        if (numberOfPlayers == 1) {
+            playerOne = binding.playerOne
+            playerOne.text = playerDAO.getPlayers()[0].nickname
+        } else if (numberOfPlayers <= 2) {
+            playerOne = binding.playerOne
+            playerOne.text = playerDAO.getPlayers()[0].nickname
 
-        playerTwo = binding.playerTwo
-        playerTwo.text = playerDAO.getPlayers()[1].nickname
+            playerTwo = binding.playerTwo
+            playerTwo.text = playerDAO.getPlayers()[1].nickname
+        } else if (numberOfPlayers <= 3) {
+            playerOne = binding.playerOne
+            playerOne.text = playerDAO.getPlayers()[0].nickname
 
-        playerThree = binding.playerThree
-        playerThree.text = playerDAO.getPlayers()[2].nickname
+            playerTwo = binding.playerTwo
+            playerTwo.text = playerDAO.getPlayers()[1].nickname
 
-        playerFour = binding.playerFour
-        playerFour.text = playerDAO.getPlayers()[3].nickname
+            playerThree = binding.playerThree
+            playerThree.text = playerDAO.getPlayers()[2].nickname
+        } else if (numberOfPlayers <= 4) {
+            playerOne = binding.playerOne
+            playerOne.text = playerDAO.getPlayers()[0].nickname
+
+            playerTwo = binding.playerTwo
+            playerTwo.text = playerDAO.getPlayers()[1].nickname
+
+            playerThree = binding.playerThree
+            playerThree.text = playerDAO.getPlayers()[2].nickname
+
+            playerFour = binding.playerFour
+            playerFour.text = playerDAO.getPlayers()[3].nickname}
 
 
         gridLayout = binding.gridLayout
 
+        playerMarker = arrayListOf(binding.blackPawn,binding.bluePawn,binding.redPawn,binding.yellowPawn)
 
+        moveMarker(playerMarker[0],0)
         rollButton.setOnClickListener{
             rollDice()
         }
@@ -69,6 +86,10 @@ class GameActivity : AppCompatActivity() {
 
     private fun rollDice(){
         val diceRoll: Int = (1..6).random()
+        val intent = Intent(this,MainActivity::class.java).apply {
+            putExtra(MainActivity.FRAGMENT_KEY, MainActivity.HISTORY_FRAGMENT)
+        }
+        startActivity(intent)
 
         val drawableResource = when(diceRoll){
             1 -> R.drawable.dice_one
@@ -82,7 +103,7 @@ class GameActivity : AppCompatActivity() {
         val newPosition = scores[currentPlayer] + diceRoll
         val excess = newPosition - 99
         val finalPosition = if (excess > 0 ){
-            scores[currentPlayer] - excess
+            99 - excess
         }
         else{
             newPosition
@@ -105,21 +126,41 @@ class GameActivity : AppCompatActivity() {
         if(checkPosition == 99){
             moveMarker(playerMarker[currentPlayer], scores[currentPlayer])
             winner = playerDAO.getPlayers()[currentPlayer].nickname
-            showWinnerDialogue().show()
+            playerDAO.addWinner(winner)
+            resetGame()
+
+            val intent = Intent(this,MainActivity::class.java).apply {
+                putExtra(MainActivity.FRAGMENT_KEY, MainActivity.HISTORY_FRAGMENT)
+            }
+            startActivity(intent)
+
 
         }
         else{
 
             scores[currentPlayer] = checkPosition
-            playerMarker = arrayListOf(binding.blackPawn,binding.bluePawn,binding.redPawn,binding.yellowPawn)
+
             moveMarker(playerMarker[currentPlayer], scores[currentPlayer])
 
-            playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} Black "
-            playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]+1} Blue"
-            playerThree.text = "${ playerDAO.getPlayers()[2].nickname}  ${scores[2]+1} Red"
-            playerFour.text = "${ playerDAO.getPlayers()[3].nickname}  ${scores[3]+1} Yellow"
-            currentPlayer = (currentPlayer + 1) % 4
-            playerIndicator.text = "It's ${ playerDAO.getPlayers()[currentPlayer].nickname}'s Turn ${scores[currentPlayer]+1}"
+            val numberOfPlayers = playerDAO.getPlayers().size
+            if (numberOfPlayers == 1) {
+                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} Black "
+            } else if (numberOfPlayers <= 2) {
+                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} Black "
+                playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]} Blue"
+            } else if (numberOfPlayers <=3) {
+                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} Black "
+                playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]} Blue"
+                playerThree.text = "${ playerDAO.getPlayers()[2].nickname}  ${scores[2]} Red"
+            } else if (numberOfPlayers <=4) {
+                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} Black "
+                playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]} Blue"
+                playerThree.text = "${ playerDAO.getPlayers()[2].nickname}  ${scores[2]} Red"
+                playerFour.text = "${ playerDAO.getPlayers()[3].nickname}  ${scores[3]} Yellow"
+            }
+            currentPlayer = (currentPlayer + 1) % numberOfPlayers
+            playerIndicator.text = "It's ${ playerDAO.getPlayers()[currentPlayer].nickname}'s " +
+                    "Turn Current Position:${scores[currentPlayer]+1}"
 
         }
 
@@ -151,37 +192,8 @@ class GameActivity : AppCompatActivity() {
     private fun resetGame(){
         currentPlayer = 0
         scores = arrayOf(0,0,0,0)
+        moveMarker(playerMarker[0],0)
 
-    }
-
-    private fun showWinnerDialogue(): Dialog {
-        return this.let{
-            val builder = AlertDialog.Builder(it)
-            val dialogPlayerActivity: DialogPlayerWinnerBinding =
-                DialogPlayerWinnerBinding.inflate(it.layoutInflater)
-
-            with(builder){
-                setPositiveButton("New Game", DialogInterface.OnClickListener { dialog, id ->
-                    val winner = winner
-                    Log.d("winner positive", winner)
-                    dialogPlayerActivity.winnerDialogText.text = "Congrats, ${winner} Won!"
-                    val playerDAO = PlayerDAOSQLLiteImplementation(applicationContext)
-                    playerDAO.addWinner(winner)
-                    resetGame()
-
-                })
-                setNegativeButton("Next", DialogInterface.OnClickListener { dialog, id ->
-                    val winner = winner
-
-                    val playerDAO = PlayerDAOSQLLiteImplementation(applicationContext)
-                    playerDAO.addWinner(winner)
-                    Log.d("winner negative", winner)
-                    resetGame()
-                })
-                setView(dialogPlayerActivity.root)
-                create()
-            }
-        }
     }
 
 

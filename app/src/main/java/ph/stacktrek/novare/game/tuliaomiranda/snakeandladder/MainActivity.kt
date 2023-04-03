@@ -19,11 +19,28 @@ class MainActivity : AppCompatActivity() {
     private val instructionFragment = InstructionFragment()
     private val historyFragment = HistoryFragment()
 
+    companion object{
+        const val FRAGMENT_KEY = "FragmentKey"
+        const val HOME_FRAGMENT = 0
+        const val INSTRUCTION_FRAGMENT = 1
+        const val HISTORY_FRAGMENT = 2
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(homeFragment)
+
+        val fragment = when(intent.getIntExtra(FRAGMENT_KEY, HOME_FRAGMENT)){
+            HOME_FRAGMENT -> homeFragment
+            INSTRUCTION_FRAGMENT -> instructionFragment
+            HISTORY_FRAGMENT -> historyFragment
+            else -> homeFragment
+        }
+
+        replaceFragment(fragment)
+
+
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
             when(it.itemId) {
@@ -43,6 +60,11 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManger.beginTransaction()
         fragmentTransaction.replace(R.id.frameLayout, fragment)
         fragmentTransaction.commit()
-    }
 
+        when(fragment){
+            homeFragment -> binding.bottomNavigationView.menu.findItem(R.id.home).isChecked = true
+            instructionFragment -> binding.bottomNavigationView.menu.findItem(R.id.instruction).isChecked = true
+            historyFragment -> binding.bottomNavigationView.menu.findItem(R.id.history).isChecked = true
+        }
+    }
 }
