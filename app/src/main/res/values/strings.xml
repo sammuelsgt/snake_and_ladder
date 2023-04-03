@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Snake and Ladder</string>
+    <string name="username_string">Username</string>
+    <string name="password_string">Password</string>
+    <string name="register_string">Register</string>
+    <string name="confirm_password_string">Confirm Password</string>
+    <string name="game_button_roll">ROLL</string>
+
+    <array name="colors">
+        <item>#FF0000</item> <!-- red -->
+        <item>#00FF00</item> <!-- green -->
+        <item>#0000FF</item> <!-- blue -->
+        <item>#FFFF00</item> <!-- yellow -->
+        <item>#FF00FF</item> <!-- magenta -->
+    </array>
+</resources>
