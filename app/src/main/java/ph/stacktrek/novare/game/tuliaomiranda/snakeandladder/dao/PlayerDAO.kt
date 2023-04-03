@@ -16,7 +16,7 @@ fun getWinners() : ArrayList<String>
 fun getWinner(): String
 fun updatePlayer(player: Player)
 fun deletePlayer(player: Player)
-fun deletePlayerById(position: Int)
+fun deletePlayerByNickname(nickname: String)
 
 
 
@@ -121,15 +121,14 @@ class PlayerDAOSQLLiteImplementation(var context: Context): PlayerDAO{
         TODO("Not yet implemented")
     }
 
-    override fun deletePlayerById(id: Int) {
+    override fun deletePlayerByNickname(nickname: String) {
         val databaseHandler = DatabaseHandler(context)
         val db = databaseHandler.writableDatabase
 
         val contentValues = ContentValues()
-        contentValues.put(DatabaseHandler.TABLE_PLAYER_ID, id)
-        db.delete(DatabaseHandler.TABLE_PLAYER,"id?$id",null)
+        contentValues.put(DatabaseHandler.TABLE_PLAYER_NAME, nickname)
+        db.delete(DatabaseHandler.TABLE_PLAYER, DatabaseHandler.TABLE_PLAYER_NAME + "=" + "'"+nickname+"'", null)
         db.close()
-
     }
 
 
