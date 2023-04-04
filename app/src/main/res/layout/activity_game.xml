@@ -12,7 +12,9 @@
         android:layout_height="40dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Player three"
+
+
+        android:textAlignment="center"
         android:padding="10dp"
         android:background="@drawable/background_red_player"
         android:textColor="@color/white"
@@ -25,8 +27,9 @@
         android:layout_height="40dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Player Four"
-        android:textAlignment="textEnd"
+
+        android:textAlignment="center"
+        android:padding="10dp"
         android:background="@drawable/background_yellow_player"
         android:textColor="@color/black"
         android:layout_marginTop="30dp"
@@ -57,7 +60,7 @@
         <GridLayout
             android:id="@+id/grid_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="283dp"
             android:layout_marginTop="10dp"
             android:adjustViewBounds="true"
             android:columnCount="10"
@@ -68,7 +71,11 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/black_pawn"
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:src="@drawable/black_pawn" />
 
 
@@ -76,6 +83,9 @@
             android:id="@+id/blue_pawn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:src="@drawable/blue_pawn"
             />
 
@@ -83,6 +93,9 @@
             android:id="@+id/red_pawn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:src="@drawable/red_pawn"
             />
 
@@ -90,6 +103,9 @@
             android:id="@+id/yellow_pawn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:src="@drawable/yellow_pawn" />
 
 
@@ -103,7 +119,8 @@
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/board_image"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Player three"
+        android:textAlignment="center"
+        android:padding="10dp"
         android:layout_marginTop="10dp"
         />
 
@@ -113,8 +130,8 @@
         android:layout_height="40dp"
         app:layout_constraintTop_toBottomOf="@id/board_image"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Player three"
-        android:textAlignment="textEnd"
+        android:textAlignment="center"
+        android:padding="10dp"
         android:background="@drawable/background_blue_player"
         android:textColor="@color/white"
         android:layout_marginTop="10dp"
