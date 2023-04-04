@@ -30,14 +30,13 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         playerDAO = PlayerDAOSQLLiteImplementation(applicationContext)
-
         diceImage = binding.diceImage
         rollButton = binding.rollDiceButton
 
         playerIndicator = binding.playerTurnIndicator
-        playerIndicator.text = "Let's play"
+        playerIndicator.text = "Let's Play"
+
 
         val numberOfPlayers = playerDAO.getPlayers().size
         if (numberOfPlayers == 1) {
@@ -70,17 +69,12 @@ class GameActivity : AppCompatActivity() {
 
             playerFour = binding.playerFour
             playerFour.text = playerDAO.getPlayers()[3].nickname}
-
-
         gridLayout = binding.gridLayout
-
         playerMarker = arrayListOf(binding.blackPawn,binding.bluePawn,binding.redPawn,binding.yellowPawn)
-
         moveMarker(playerMarker[0],0)
         rollButton.setOnClickListener{
             rollDice()
         }
-
     }
 
     private fun rollDice(){
