@@ -22,7 +22,6 @@ class GameActivity : AppCompatActivity() {
     private lateinit var gridLayout: GridLayout
     private lateinit var playerMarker: ArrayList<ImageView>
     private  var currentPlayer = 0
-    private var test = 0
     private  var scores = arrayOf(0,0,0,0)
     private var winner = ""
 
@@ -38,7 +37,7 @@ class GameActivity : AppCompatActivity() {
         rollButton = binding.rollDiceButton
 
         playerIndicator = binding.playerTurnIndicator
-        playerIndicator.text = "${test+1}"
+        playerIndicator.text = "Let's play"
 
         val numberOfPlayers = playerDAO.getPlayers().size
         if (numberOfPlayers == 1) {
@@ -140,23 +139,23 @@ class GameActivity : AppCompatActivity() {
 
             val numberOfPlayers = playerDAO.getPlayers().size
             if (numberOfPlayers == 1) {
-                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} Black "
+                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} "
             } else if (numberOfPlayers <= 2) {
-                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} Black "
-                playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]} Blue"
+                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} "
+                playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]} "
             } else if (numberOfPlayers <=3) {
-                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} Black "
-                playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]} Blue"
-                playerThree.text = "${ playerDAO.getPlayers()[2].nickname}  ${scores[2]} Red"
+                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1}  "
+                playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]} "
+                playerThree.text = "${ playerDAO.getPlayers()[2].nickname}  ${scores[2]} "
             } else if (numberOfPlayers <=4) {
-                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1} Black "
-                playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]} Blue"
-                playerThree.text = "${ playerDAO.getPlayers()[2].nickname}  ${scores[2]} Red"
-                playerFour.text = "${ playerDAO.getPlayers()[3].nickname}  ${scores[3]} Yellow"
+                playerOne.text = "${ playerDAO.getPlayers()[0].nickname}  ${scores[0]+1}  "
+                playerTwo.text = "${ playerDAO.getPlayers()[1].nickname}  ${scores[1]} "
+                playerThree.text = "${ playerDAO.getPlayers()[2].nickname}  ${scores[2]} "
+                playerFour.text = "${ playerDAO.getPlayers()[3].nickname}  ${scores[3]} "
             }
             currentPlayer = (currentPlayer + 1) % numberOfPlayers
             playerIndicator.text = "It's ${ playerDAO.getPlayers()[currentPlayer].nickname}'s " +
-                    "Turn Current Position:${scores[currentPlayer]+1}"
+                    "Turn \n Current Position:${scores[currentPlayer]+1}"
 
         }
 
