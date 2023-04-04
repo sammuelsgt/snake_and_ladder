@@ -55,8 +55,7 @@ class PlayerAdapter (private val context: PlayerActivity,
 
             }
 
-//            playerBinding.counter.text = playerDAO.getPlayers().size.toString()
-//            Log.d("counter 2", playerBinding.counter.text.toString())
+
         }
     }
 }

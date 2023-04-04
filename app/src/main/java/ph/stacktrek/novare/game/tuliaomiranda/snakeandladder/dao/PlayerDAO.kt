@@ -79,7 +79,8 @@ class PlayerDAOSQLLiteImplementation(var context: Context): PlayerDAO{
         val columns = arrayOf(DatabaseHandler.TABLE_WINNER_ID,DatabaseHandler.TABLE_WINNER_NAME)
         try {
             cursor = db.query(DatabaseHandler.TABLE_WINNER,
-                columns,null,null,null,null,"id DESC", "5")
+                columns,null,null,null,null,
+                DatabaseHandler.TABLE_WINNER_ID + " DESC", "5")
         }catch (sqlException: SQLException){
             db.close()
             return winners
@@ -105,7 +106,7 @@ class PlayerDAOSQLLiteImplementation(var context: Context): PlayerDAO{
             val columns = arrayOf(DatabaseHandler.TABLE_WINNER_ID,DatabaseHandler.TABLE_WINNER_NAME)
             try {
                 cursor = db.query(DatabaseHandler.TABLE_WINNER,
-                    columns,null,null,null,null,"id DESC", "1")
+                    columns,null,null,null,null, DatabaseHandler.TABLE_WINNER_ID + "DESC", "1")
             }catch (sqlException: SQLException){
                 db.close()
                 return winners
@@ -146,24 +147,3 @@ class PlayerDAOSQLLiteImplementation(var context: Context): PlayerDAO{
 
 
 
-//class PlayerDAOStubImplementation: PlayerDAO{
-//
-//private var playerList: ArrayList<Player> = ArrayList()
-//
-//
-//
-//    override fun addPlayer(player: Player) {
-//        playerList.add(player)
-//    }
-//
-//    override fun getPlayers(): ArrayList<Player> = playerList
-//
-//    override fun updatePlayer(player: Player) {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun deletePlayer(player: Player) {
-//        TODO("Not yet implemented")
-//    }
-//
-//}

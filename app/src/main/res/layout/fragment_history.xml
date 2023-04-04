@@ -31,20 +31,27 @@
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/bar_logo"
         tools:ignore="MissingConstraints" />
-
-
-    <TextView
+    <FrameLayout
+        android:id="@+id/recycler_view_container"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/name_of_winner"
-        android:textAlignment="center"
+
         app:layout_constraintTop_toBottomOf="@id/history"
+
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/name_of_winners"
         android:padding="20dp"
-        tools:layout_editor_absoluteX="0dp" />
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

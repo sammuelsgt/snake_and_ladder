@@ -86,10 +86,6 @@ class GameActivity : AppCompatActivity() {
 
     private fun rollDice(){
         val diceRoll: Int = (1..6).random()
-        val intent = Intent(this,MainActivity::class.java).apply {
-            putExtra(MainActivity.FRAGMENT_KEY, MainActivity.HISTORY_FRAGMENT)
-        }
-        startActivity(intent)
 
         val drawableResource = when(diceRoll){
             1 -> R.drawable.dice_one
